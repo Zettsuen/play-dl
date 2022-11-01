@@ -257,12 +257,6 @@ export async function video_basic_info(url: string, options: InfoOptions = {}): 
         }
     }
 
-    const likeRenderer = initial_response.contents.twoColumnWatchNextResults.results.results.contents
-        .find((content: any) => content.videoPrimaryInfoRenderer)
-        ?.videoPrimaryInfoRenderer.videoActions.menuRenderer.topLevelButtons?.find(
-            (button: any) => button.toggleButtonRenderer?.defaultIcon.iconType === 'LIKE' || button.segmentedLikeDislikeButtonRenderer?.likeButton.toggleButtonRenderer?.defaultIcon.iconType === 'LIKE'
-        )
-
     const video_details = new YouTubeVideo({
         id: vid.videoId,
         title: vid.title,
@@ -283,10 +277,6 @@ export async function video_basic_info(url: string, options: InfoOptions = {}): 
         },
         views: vid.viewCount,
         tags: vid.keywords,
-        likes: parseInt(
-            likeRenderer?.toggleButtonRenderer?.defaultText.accessibility?.accessibilityData.label.replace(/\D+/g, '') ?? 
-            likeRenderer?.segmentedLikeDislikeButtonRenderer?.likeButton.toggleButtonRenderer?.defaultText.accessibility?.accessibilityData.label.replace(/\D+/g, '') ?? 0
-        ),
         live: vid.isLiveContent,
         private: vid.isPrivate,
         discretionAdvised,
